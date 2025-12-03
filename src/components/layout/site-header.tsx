@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Menu, ShoppingCart, Search, User, X, Plus, Minus } from "lucide-react";
+import { Menu, ShoppingCart, Search, User, X, Plus, Minus, LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,10 +23,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/lib/cart";
+import { useAuth } from "@/lib/auth";
 import { siteName } from "@/lib/site-info";
 
 export function SiteHeader() {
   const { items, itemCount, subtotal, removeItem, updateQuantity } = useCart();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
@@ -206,21 +208,51 @@ export function SiteHeader() {
           {/* Account */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-foreground/70 hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-foreground/70 hover:text-foreground"
+                aria-label={user ? `Account menu for ${user.name}` : "Account"}
+              >
                 <User className="h-5 w-5" />
                 <span className="sr-only">Account</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/login" className="w-full cursor-pointer">Sign In</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/register" className="w-full cursor-pointer">Register</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard" className="w-full cursor-pointer">Dashboard</Link>
-              </DropdownMenuItem>
+              {user ? (
+                <>
+                  <div className="px-3 py-2 text-sm text-muted-foreground">
+                    Signed in as
+                    <div className="font-medium text-foreground">{user.name}</div>
+                  </div>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="w-full cursor-pointer">
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-destructive" onSelect={signOut}>
+                    <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href="/login" className="w-full cursor-pointer">
+                      Sign In
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/register" className="w-full cursor-pointer">
+                      Register
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="w-full cursor-pointer">
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
