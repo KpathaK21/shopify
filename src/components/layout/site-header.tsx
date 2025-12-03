@@ -23,6 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/lib/cart";
+import { siteName } from "@/lib/site-info";
 
 export function SiteHeader() {
   const { items, itemCount, subtotal, removeItem, updateQuantity } = useCart();
@@ -52,7 +53,7 @@ export function SiteHeader() {
 
           {/* Logo */}
           <Link href="/" className="hidden md:block">
-            <h1 className="text-xl font-bold">ShopHub</h1>
+            <h1 className="text-xl font-bold">{siteName}</h1>
           </Link>
 
           {/* Desktop navigation */}
@@ -67,7 +68,7 @@ export function SiteHeader() {
 
         {/* Mobile Logo */}
         <Link href="/" className="md:hidden">
-          <h1 className="text-xl font-bold">ShopHub</h1>
+          <h1 className="text-xl font-bold">{siteName}</h1>
         </Link>
 
         <div className="flex items-center gap-2">

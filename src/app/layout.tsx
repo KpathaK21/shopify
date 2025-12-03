@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientBody from "./ClientBody";
 import Script from "next/script";
+import { siteDescription, siteName } from "@/lib/site-info";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ShopHub - Create Your Online Store",
-  description: "Create and manage your own online store with ShopHub",
+  title: `${siteName} | Personal Storefront`,
+  description: siteDescription,
 };
 
 export default function RootLayout({

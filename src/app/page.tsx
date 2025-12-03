@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { siteDescription, siteName, siteTagline } from "@/lib/site-info";
 
 // Placeholder data for featured products
 const featuredProducts = [
@@ -69,18 +70,19 @@ export default function Home() {
       <section className="relative py-20 md:py-32 bg-gray-50 dark:bg-gray-900/50">
         <div className="container flex flex-col items-center text-center space-y-6 md:space-y-8">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-            Your One-Stop E-commerce Solution
+            Welcome to {siteName}
           </h1>
           <p className="text-muted-foreground max-w-[42rem] text-lg md:text-xl">
-            Create, manage, and grow your online store with our powerful platform.
-            Start selling your products online today.
+            {siteDescription}
+            {" "}
+            {siteTagline}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button size="lg" className="font-medium">
-              <Link href="/products">Shop Now</Link>
+              <Link href="/products">Shop My Collection</Link>
             </Button>
             <Button size="lg" variant="outline" className="font-medium">
-              <Link href="/dashboard">Create Your Store</Link>
+              <Link href="/contact">Ask About Custom Orders</Link>
             </Button>
           </div>
         </div>
@@ -93,7 +95,7 @@ export default function Home() {
             <div className="flex justify-between items-center">
               <h2 className="text-2xl md:text-3xl font-bold">Featured Products</h2>
               <Button variant="ghost" className="gap-1 font-medium">
-                View All <ArrowRight className="h-4 w-4" />
+                Browse Everything <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
 
@@ -176,13 +178,13 @@ export default function Home() {
       <section className="py-16 md:py-20">
         <div className="container">
           <div className="bg-primary/5 border rounded-2xl p-8 md:p-10 lg:p-12 flex flex-col items-center text-center space-y-6">
-            <h2 className="text-2xl md:text-3xl font-bold">Ready to Start Your Online Business?</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Looking for something specific?</h2>
             <p className="text-muted-foreground max-w-[42rem]">
-              Join thousands of entrepreneurs who have launched their online stores with ShopHub.
-              Our platform provides everything you need to create, manage, and grow your e-commerce business.
+              If you have a product request, need a custom bundle, or want to know what’s coming next,
+              I’d love to hear from you. Send a note and I’ll get back quickly.
             </p>
             <Button size="lg" className="font-medium mt-4">
-              <Link href="/register">Get Started for Free</Link>
+              <Link href="/contact">Get in Touch</Link>
             </Button>
           </div>
         </div>
