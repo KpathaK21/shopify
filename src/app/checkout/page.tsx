@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/lib/cart";
+import { useAuth } from "@/lib/auth";
 import { Check, CreditCard } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ import {
 
 export default function CheckoutPage() {
   const { items, itemCount, subtotal } = useCart();
+  const { user } = useAuth();
   const [shippingMethod, setShippingMethod] = useState<"standard" | "express">("standard");
 
   // Shipping cost based on selected method
@@ -57,7 +59,9 @@ export default function CheckoutPage() {
       <div className="flex flex-col space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Checkout</h1>
-          <p className="text-muted-foreground mt-1">Complete your purchase</p>
+          <p className="text-muted-foreground mt-1">
+            Complete your purchase {user ? `as ${user.name}` : "as a guest or sign in if you prefer"}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -75,6 +79,7 @@ export default function CheckoutPage() {
                     id="email"
                     type="email"
                     placeholder="your@email.com"
+                    defaultValue={user?.email}
                     className="w-full"
                   />
                 </div>
