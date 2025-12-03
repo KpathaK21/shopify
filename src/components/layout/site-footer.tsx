@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { siteDescription, siteName, siteTagline } from "@/lib/site-info";
 
 export function SiteFooter() {
   return (
@@ -7,10 +8,8 @@ export function SiteFooter() {
       <div className="container py-12 md:py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">ShopHub</h3>
-            <p className="text-sm text-muted-foreground">
-              Create and manage your own online store with ease.
-            </p>
+            <h3 className="text-lg font-semibold">{siteName}</h3>
+            <p className="text-sm text-muted-foreground">{siteDescription}</p>
           </div>
 
           <div className="space-y-4">
@@ -32,7 +31,7 @@ export function SiteFooter() {
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-medium">Company</h3>
+            <h3 className="text-sm font-medium">About</h3>
             <nav className="flex flex-col space-y-2">
               <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
                 About Us
@@ -40,11 +39,11 @@ export function SiteFooter() {
               <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
                 Contact
               </Link>
-              <Link href="/careers" className="text-sm text-muted-foreground hover:text-foreground">
-                Careers
+              <Link href="/story" className="text-sm text-muted-foreground hover:text-foreground">
+                My Story
               </Link>
-              <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground">
-                Blog
+              <Link href="/faq" className="text-sm text-muted-foreground hover:text-foreground">
+                FAQ
               </Link>
             </nav>
           </div>
@@ -72,7 +71,7 @@ export function SiteFooter() {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ShopHub. All rights reserved.
+            © {new Date().getFullYear()} {siteName}. {siteTagline}
           </p>
           <div className="flex items-center space-x-4">
             <Link href="#" className="text-muted-foreground hover:text-foreground">
