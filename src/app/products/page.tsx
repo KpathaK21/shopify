@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { products, categories } from "@/lib/mock-data";
 import { useCart } from "@/lib/cart";
+import type { Product } from "@/lib/types";
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 export default function ProductsPage() {
   const { addItem } = useCart();
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     addItem(product, 1);
   };
 
@@ -31,16 +32,20 @@ export default function ProductsPage() {
             <div>
               <h3 className="font-medium mb-4">Categories</h3>
               <div className="space-y-2">
-                {categories.map((category) => (
-                  <div key={category.id} className="flex items-center">
-                    <Link
-                      href={`/categories/${category.slug}`}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {category.name}
-                    </Link>
-                  </div>
-                ))}
+                {categories.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Add a product to see categories here.</p>
+                ) : (
+                  categories.map((category) => (
+                    <div key={category.id} className="flex items-center">
+                      <Link
+                        href={`/categories/${category.slug}`}
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {category.name}
+                      </Link>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
@@ -134,85 +139,108 @@ export default function ProductsPage() {
               </div>
 
               {/* Products grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
-                  <Card key={product.id} className="overflow-hidden group">
-                    <CardHeader className="p-0 relative aspect-square">
-                      <Link href={`/products/${product.slug}`}>
-                        <div className="relative w-full h-full overflow-hidden">
-                          <Image
-                            src={product.images[0]}
-                            alt={product.name}
-                            fill
-                            className="object-cover transition-transform group-hover:scale-105"
-                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                          />
-                        </div>
-                        {product.isNew && (
-                          <Badge className="absolute top-2 right-2">New</Badge>
-                        )}
-                        {product.compareAtPrice && (
-                          <Badge variant="outline" className="absolute top-2 left-2 bg-background text-foreground">
-                            Sale
-                          </Badge>
-                        )}
-                      </Link>
-                    </CardHeader>
-                    <CardContent className="p-4">
-                      <div className="text-sm text-muted-foreground">
-                        {product.category}
-                      </div>
-                      <h3 className="font-medium mt-1 line-clamp-1">
-                        <Link href={`/products/${product.slug}`}>{product.name}</Link>
-                      </h3>
-                      {product.ratings && (
-                        <div className="flex items-center mt-1">
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <svg
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < Math.round(product.ratings?.average || 0)
-                                    ? "text-yellow-400"
-                                    : "text-gray-300"
-                                }`}
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
-                              </svg>
-                            ))}
+              {products.length === 0 ? (
+                <Card className="p-8 md:p-10">
+                  <div className="flex flex-col gap-4 text-center items-center">
+                    <h2 className="text-2xl font-semibold">No products available yet</h2>
+                    <p className="text-muted-foreground max-w-2xl">
+                      Your storefront is empty so customers will not see any items here until you add a real product. Follow these steps to list your first item.
+                    </p>
+                    <div className="text-left w-full max-w-2xl space-y-3">
+                      <h3 className="font-medium">How to add a product</h3>
+                      <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                        <li>Prepare your product details: name, price, slug/URL handle, description, and at least one image URL.</li>
+                        <li>Open <code>backend/main.go</code> and add a new entry to the <code>products</code> slice with your real details, images, and stock level; restart the Go server if it is running.</li>
+                        <li>If you are using the static frontend data, add the same product object to <code>src/lib/mock-data.ts</code> so the Next.js pages render it.</li>
+                        <li>Refresh the site; the new product will appear here and on the homepage.</li>
+                      </ol>
+                    </div>
+                    <Button asChild size="lg">
+                      <Link href="/contact">Need help? Contact us</Link>
+                    </Button>
+                  </div>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {products.map((product) => (
+                    <Card key={product.id} className="overflow-hidden group">
+                      <CardHeader className="p-0 relative aspect-square">
+                        <Link href={`/products/${product.slug}`}>
+                          <div className="relative w-full h-full overflow-hidden">
+                            <Image
+                              src={product.images[0]}
+                              alt={product.name}
+                              fill
+                              className="object-cover transition-transform group-hover:scale-105"
+                              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            />
                           </div>
-                          <span className="text-xs text-muted-foreground ml-1">
-                            ({product.ratings.count})
-                          </span>
+                          {product.isNew && (
+                            <Badge className="absolute top-2 right-2">New</Badge>
+                          )}
+                          {product.compareAtPrice && (
+                            <Badge variant="outline" className="absolute top-2 left-2 bg-background text-foreground">
+                              Sale
+                            </Badge>
+                          )}
+                        </Link>
+                      </CardHeader>
+                      <CardContent className="p-4">
+                        <div className="text-sm text-muted-foreground">
+                          {product.category}
                         </div>
-                      )}
-                    </CardContent>
-                    <CardFooter className="p-4 pt-0 flex items-center justify-between">
-                      <div className="font-semibold">
-                        {product.compareAtPrice ? (
-                          <div className="flex gap-2 items-center">
-                            <span>${product.price}</span>
-                            <span className="text-sm text-muted-foreground line-through">
-                              ${product.compareAtPrice}
+                        <h3 className="font-medium mt-1 line-clamp-1">
+                          <Link href={`/products/${product.slug}`}>{product.name}</Link>
+                        </h3>
+                        {product.ratings && (
+                          <div className="flex items-center mt-1">
+                            <div className="flex items-center">
+                              {[...Array(5)].map((_, i) => (
+                                <svg
+                                  key={i}
+                                  className={`h-4 w-4 ${
+                                    i < Math.round(product.ratings?.average || 0)
+                                      ? "text-yellow-400"
+                                      : "text-gray-300"
+                                  }`}
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z" />
+                                </svg>
+                              ))}
+                            </div>
+                            <span className="text-xs text-muted-foreground ml-1">
+                              ({product.ratings.count})
                             </span>
                           </div>
-                        ) : (
-                          <span>${product.price}</span>
                         )}
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleAddToCart(product)}
-                      >
-                        Add to Cart
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
+                      </CardContent>
+                      <CardFooter className="p-4 pt-0 flex items-center justify-between">
+                        <div className="font-semibold">
+                          {product.compareAtPrice ? (
+                            <div className="flex gap-2 items-center">
+                              <span>${product.price}</span>
+                              <span className="text-sm text-muted-foreground line-through">
+                                ${product.compareAtPrice}
+                              </span>
+                            </div>
+                          ) : (
+                            <span>${product.price}</span>
+                          )}
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleAddToCart(product)}
+                        >
+                          Add to Cart
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              )}
 
               {/* Pagination */}
               <div className="flex justify-center mt-8">

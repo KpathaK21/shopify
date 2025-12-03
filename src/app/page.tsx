@@ -1,67 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ClipboardList } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { siteDescription, siteName, siteTagline } from "@/lib/site-info";
-
-// Placeholder data for featured products
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Minimalist Desk Lamp",
-    price: 89.99,
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?q=80&w=266&auto=format&fit=crop",
-    category: "Home Office",
-    isFeatured: true,
-    isNew: false,
-  },
-  {
-    id: 2,
-    name: "Ergonomic Office Chair",
-    price: 249.99,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop",
-    category: "Furniture",
-    isFeatured: true,
-    isNew: true,
-  },
-  {
-    id: 3,
-    name: "Wireless Earbuds",
-    price: 129.99,
-    image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?q=80&w=1978&auto=format&fit=crop",
-    category: "Electronics",
-    isFeatured: true,
-    isNew: true,
-  },
-  {
-    id: 4,
-    name: "Smart Watch",
-    price: 199.99,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop",
-    category: "Electronics",
-    isFeatured: true,
-    isNew: false,
-  },
-];
-
-// Placeholder data for categories
-const categories = [
-  {
-    name: "Electronics",
-    image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1801&auto=format&fit=crop",
-  },
-  {
-    name: "Clothing",
-    image: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=2070&auto=format&fit=crop",
-  },
-  {
-    name: "Home & Kitchen",
-    image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=2070&auto=format&fit=crop",
-  },
-];
 
 export default function Home() {
   return (
@@ -91,86 +33,48 @@ export default function Home() {
       {/* Featured Products Section */}
       <section className="py-16 md:py-20">
         <div className="container">
-          <div className="flex flex-col space-y-6 md:space-y-8">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl md:text-3xl font-bold">Featured Products</h2>
-              <Button variant="ghost" className="gap-1 font-medium">
-                Browse Everything <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
+            <div className="flex flex-col space-y-6 md:space-y-8">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl md:text-3xl font-bold">Featured Products</h2>
+                <Button variant="ghost" className="gap-1 font-medium" disabled>
+                  Browse Everything <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {featuredProducts.map((product) => (
-                <Card key={product.id} className="overflow-hidden group">
-                  <CardHeader className="p-0 relative aspect-square">
-                    <Link href={`/products/${product.id}`}>
-                      <div className="relative w-full h-full overflow-hidden">
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          className="object-cover transition-transform group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        />
-                      </div>
-                      {product.isNew && (
-                        <Badge className="absolute top-2 right-2">New</Badge>
-                      )}
-                    </Link>
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <div className="text-sm text-muted-foreground">
-                      {product.category}
-                    </div>
-                    <h3 className="font-medium mt-1">
-                      <Link href={`/products/${product.id}`}>{product.name}</Link>
-                    </h3>
-                  </CardContent>
-                  <CardFooter className="p-4 pt-0 flex items-center justify-between">
-                    <div className="font-semibold">${product.price}</div>
-                    <Button size="sm" variant="ghost">Add to Cart</Button>
-                  </CardFooter>
-                </Card>
-              ))}
+              <Card className="p-6 md:p-8 flex flex-col items-center text-center space-y-4">
+                <ClipboardList className="h-10 w-10 text-muted-foreground" />
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold">No products are live yet</h3>
+                  <p className="text-muted-foreground max-w-xl">
+                    Add your first product to start selling. Once a product is added, it will appear here as part of your featured collection.
+                  </p>
+                </div>
+                <Button asChild>
+                  <Link href="/products">Go to product setup</Link>
+                </Button>
+              </Card>
             </div>
-          </div>
         </div>
       </section>
 
       {/* Categories Section */}
       <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-900/50">
         <div className="container">
-          <div className="flex flex-col space-y-6 md:space-y-8">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl md:text-3xl font-bold">Shop by Category</h2>
-              <Button variant="ghost" className="gap-1 font-medium">
-                All Categories <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
+            <div className="flex flex-col space-y-6 md:space-y-8">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl md:text-3xl font-bold">Shop by Category</h2>
+                <Button variant="ghost" className="gap-1 font-medium" disabled>
+                  All Categories <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {categories.map((category) => (
-                <Link
-                  href={`/categories/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  key={category.name}
-                  className="group"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                    <Image
-                      src={category.image}
-                      alt={category.name}
-                      fill
-                      className="object-cover transition-transform group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-6">
-                      <h3 className="text-white text-xl font-medium">{category.name}</h3>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+              <Card className="p-6 md:p-8 flex flex-col items-center text-center space-y-3">
+                <ClipboardList className="h-8 w-8 text-muted-foreground" />
+                <p className="text-muted-foreground max-w-xl">
+                  Categories will show up here after you add real items to your store and group them. Create at least one product to unlock category browsing.
+                </p>
+              </Card>
             </div>
-          </div>
         </div>
       </section>
 
